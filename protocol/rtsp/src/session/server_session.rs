@@ -159,7 +159,7 @@ impl RtspServerSession {
             if let Ok(data) = InterleavedBinaryData::new(&mut self.reader) {
                 match data {
                     Some(a) => {
-                        if self.reader.len() < a.length as usize {
+                        while self.reader.len() < a.length as usize {
                             let data = self.io.lock().await.read().await?;
                             self.reader.extend_from_slice(&data[..]);
                         }
